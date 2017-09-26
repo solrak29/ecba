@@ -9,9 +9,20 @@
 //
 
 var parseJson = require('parse-json');
-var mycoupeRef = require("./lib/mycouperef.js");
 var chatinterface = require("./lib/mycoupefbinterface.js");
-//var users = require("./lib/mycoupeusers.js");
+var chatai = require("./lib/mycouperwatson.js");
+
+var Users = require("./lib/mycoupeusers.js");
+var users = new Users.Users();
+
+var msgEvent = require( './lib/mycoupeMsgEvent.js' );
+var MyCoopDocHand = require('./lib/mycoupedochandler.js' );
+var docHand = new MyCoopDocHand.MyCoopDocHandler();
+var util = require('util');
+var multer = require('multer')
+var upload = multer({ dest: 'uploads/' });
+var type = upload.single('file');
+
 
 const 
   bodyParser = require('body-parser'),
@@ -19,7 +30,6 @@ const
   crypto = require('crypto'),
   express = require('express'),
   request = require('request'),
-  util = require('util'),
   path =require('path');
 
 
@@ -32,7 +42,13 @@ app.set('view engine', 'ejs');
 //app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(bodyParser.json());
 //app.use(express.static('public'));
+console.log("Listening for events...");
 app.listen( app.get('port'));
+
+app.get('/', function(req, res ) {
+    console.log("getting blank");
+    res.sendStatus(403);          
+});
 
 //
 //    Facebook messenger uses this function to register an app to messenger
@@ -40,8 +56,8 @@ app.listen( app.get('port'));
 //    Here we use this as an "restful" api for any messenger component if this is needed
 //
 app.get('/webhook', function(req, res) {
-    console.log("Recieved webhook request validation");
-    challenge = chatinterface.validate( req, handleValidation); 
+    console.log("Recieved FaceBook webhook request validation");
+    var challenge = chatinterface.validate( req ); 
     if ( challenge ) {
         res.status(200).send(challenge);
     } else {
@@ -49,17 +65,93 @@ app.get('/webhook', function(req, res) {
     }
 });
 
+app.post('/', function( req, res ) {
+    console.log("recieved a post event...");
+    res.sendStatus(403);          
+});
+
+app.post('//fileupload',type,function(req,res,next) {
+
+    console.log( "Uploading document...");
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    //console.log( "Request: " + util.inspect(req, false, null));
+    var collection_name = req.body.collectionName
+    if (collection_name == null) {
+        err_message = 'No collection name'
+        console.log(err_message)
+        return res.status(400).json(err_message)
+    }
+
+    var description = req.body.description
+    if (description == null) {
+         description = ''
+    }
+
+    var property_manager = req.body.ownerName
+    if (property_manager == null) {
+         err_message = "No property manager provided"
+         console.log(err_message)
+         return res.status(400).json(err_message)
+    }
+
+    var propParams = {}
+    propParams.propertyManager = property_manager
+    propParams.type = req.body.type
+
+    docHand.create_collection( collection_name, 
+                      description, 
+                      req.file.path,
+                      propParams,
+                      res,
+                      function (err, data) {
+        if (err) {
+            console.log(err)
+            return res.status(400).json(err);
+        } else {
+            console.log("Collection save...");
+            return res.status(200).json("success");
+            //
+            //  TBD: save to db
+        }
+    });
+});
+
+
+app.post('//uploadaddress', type, function( req, res, next ) {
+    console.log( "Uploading document...");
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+    //console.log( "Request: " + JSON.stringify(req));
+    //console.log( "Request: " + util.inspect(req, false, null));
+    if ( req.mydata ) {
+        console.log( req.mydata );
+    }
+    if ( req.file ) {
+        console.log("Found file part...");
+        var stat = docHand.uploaddoc( req.file );
+    } else {
+        // place holder for address upload
+        console.log("No file but manual input");
+    }
+    return res.status(200).json("success");
+});
+
 /*
  * All callbacks for Messenger are POST-ed. They will be sent to the same
- * webhook. Be sure to subscribe your app to your page to receive callbacks
+ * webhook call. Be sure to subscribe your app to your page to receive callbacks
  * for your page. 
+ *
  * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
  *
  */
 app.post('/webhook', function (req, res) {
-    console.log("Recieving message...");
+    console.log("Recieving message via webhook...");
     // pass on to FB processing to extract the data and call the applications processEvent with object details 
-    console.log( "Request  => " + JSON.stringify(req.body) );
+    //console.log( "Request  => " + JSON.stringify(req.body) );
     chatinterface.processMessage( req, processEvent );
     //console.log( "Data => " + JSON.stringify(data));
     // Assume all went well.
@@ -80,48 +172,62 @@ function userMessage( err, userprofile){
     }
 }
 
+//
+//  Main Event handler that will route to correct handling
+//
 
 function processEvent( eventDetails ) {
+    console.log("app::processEvent");
 
-    if ( eventDetails.getMessageText() ) {
-        console.log('==================AM HERE '+ eventDetails.getSender()+' ===========================');
-        // 
-        // Recieved a message from a user; check if user is known
-        //
-	var knownUser = false;
-	var messageText = null;
-	var userprofile = {};
-
-        //
-	// tbd, database return needs to return the same details as getUserProfile from chatinterface
-        // tbd:  this sequence will go to discover via the chatinterface
-	//
-	//
-        mycoupeRef.getUserByID( eventDetails.getSenderID(), function( err, userprofile){
-            if ( userprofile ) {
-	        knownUser = true;
-                consloe.log( "Db Returned user details...");
-	        messageText = "Welcome back " + userprofile.first_name + " to MyCoop. Your personal virtual agent.  How may of be of service?";
-            } else {
+    //
+    //  Facebook messenger response
+    //
+    if ( typeof eventDetails !== 'undefined' && 
+         eventDetails != null &&
+         eventDetails.getEventSender() == "FB" ) {
+        console.log("Recieved and event from FaceBook..." );
+        if ( eventDetails.getMessageText() ) {
+            console.log("Received message event from " + eventDetails.getRecipient());
+            console.log("Sender ID " + eventDetails.getSenderID() );
+            // 
+            // Recieved a message from a user; check if has logged in before
+            // to determine if we need to go to FB to get any user details.
+            //
+            if ( !users.isKnownUser( eventDetails.getSenderID() ) ) {
 	        // start extracting details via chat interface
-		chatinterface.getUserProfile( eventDetails.getSenderID(), function( userprofile){
-		    if ( userprofile ) {
+	        console.log("getting user details from graph");
+	        chatinterface.getUserProfile( eventDetails.getSenderID(), function( userprofile){
+	            if ( userprofile ) {
                         console.log(" got user details from chat interface ");
-		        messageText = "Welcome to MyCoop, " + userprofile.firstname + "!  It seems you are new here.  I am your virtual building manager, dedicatd to helping your residential building needs.";
-			console.log( "Saviing user profile details for " + userprofile.firstname);
-                        // tbd: need to save user profile details
-			//mycoupeRef.saveUserProfile( userprofile );
-	                chatinterface.sendTextMessage( eventDetails.getSenderID(), messageText );
+		        users.addUser(userprofile.firstname, 
+                                      eventDetails.getSenderID(), 
+                                      eventDetails.getRecipient() );
+		        console.log( "Saving user profile details for " + userprofile.firstname);
+                        console.log("Senidng user details to ai");
+                        chatai.send( users.getUserDetails(eventDetails.getSenderID()), processEvent );
+                        // sending user details to ai
 		    } else {
-		        messageText = "Welcome to MyCoop!  It seems you are new here.  I am your virtual building manager, dedicated to helping your residential building needs.";
-	                chatinterface.sendTextMessage( eventDetails.getSenderID(), messageText );
+		        console.log( "No user information found: chat ai will have to extract");
+		        users.addUser( null, eventDetails.getSenderID(), eventDetails.getRecipient());
+		        console.log( "This function is TBD at the moment since the graph api will work");
 		    }
-		});
-	    }
-        }); 
+	         });
+            } else {
+                console.log("We have user set already sending direclty to ai");
+                chatai.sendMsg( users.getUserDetails(eventDetails.getSenderID()), eventDetails.getMsg(), processEvent );
+            }
+        } else {
+            console.log("Did not recieve any message from event object");
+            console.log("Should never get here need to investigate if we do");
+        }
 
     } else {
-        consle.log(" Recieved a non-message text event tbh ");
+        if ( typeof eventDetails !== 'undefined' && eventDetails != null ) {
+            console.log( "Responding back to user" );
+            chatinterface.sendTextMessage( eventDetails.getSenderID(), eventDetails.getMsg() ); 
+        } else {
+            console.log(" null event not sending any message");
+        }
     }
 }
 
