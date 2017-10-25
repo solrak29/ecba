@@ -185,36 +185,38 @@ function processEvent( eventDetails ) {
     if ( typeof eventDetails !== 'undefined' && 
          eventDetails != null &&
          eventDetails.getEventSender() == "FB" ) {
-        console.log("Recieved and event from FaceBook..." );
-        if ( eventDetails.getMessageText() ) {
-            console.log("Received message event from " + eventDetails.getRecipient());
-            console.log("Sender ID " + eventDetails.getSenderID() );
-            // 
-            // Recieved a message from a user; check if has logged in before
-            // to determine if we need to go to FB to get any user details.
-            //
-            if ( !users.isKnownUser( eventDetails.getSenderID() ) ) {
-	        // start extracting details via chat interface
-	        console.log("getting user details from graph");
-	        chatinterface.getUserProfile( eventDetails.getSenderID(), function( userprofile){
-	            if ( userprofile ) {
-                        console.log(" got user details from chat interface ");
-		        users.addUser(userprofile.firstname, 
-                                      eventDetails.getSenderID(), 
-                                      eventDetails.getRecipient() );
-		        console.log( "Saving user profile details for " + userprofile.firstname);
-                        console.log("Senidng user details to ai");
-                        chatai.send( users.getUserDetails(eventDetails.getSenderID()), processEvent );
-                        // sending user details to ai
-		    } else {
-		        console.log( "No user information found: chat ai will have to extract");
-		        users.addUser( null, eventDetails.getSenderID(), eventDetails.getRecipient());
-		        console.log( "This function is TBD at the moment since the graph api will work");
-		    }
-	         });
+
+             console.log("Recieved FaceBook Event..." );
+             if ( eventDetails.getMessageText() ) {
+                 var pageid = eventDetails.getRecipient();
+                 var user = eventDetails.getSenderID();
+                 console.log("Page ID " + pageid);
+                 console.log("Sender ID (i.e. user) " + user );
+                 // 
+                 // Recieved a message from a user; check if has logged in before
+                 // to determine if we need to go to FB to get any user details.
+                 //
+                 console.log("Checking is user already has chat dialog going...");
+                 if ( !users.isKnownUser( user ) ) {
+	             // start extracting details via chat interface since this a new dialog conversation
+	             console.log("New dialog conversation getting user details from graph since we don't have info");
+	             chatinterface.getUserProfile( user, function( userprofile){
+	                 if ( userprofile ) {
+                             console.log("Saving FB provided details from chat interface ");
+		             users.addUser(userprofile.firstname, user, pageid );
+		             console.log( "Saving user profile details for " + userprofile.firstname);
+                             console.log("Senidng user details to ai");
+                             chatai.send( users.getUserDetails(user), processEvent );
+                             // sending user details to ai
+		         } else {
+		             console.log( "No user information found: chat ai will have to extract");
+		             users.addUser( null, user, pageid);
+		             console.log( "This function is TBD at the moment since the graph api will work");
+		         }
+	            }); // end getUserProfile
             } else {
                 console.log("We have user set already sending direclty to ai");
-                chatai.sendMsg( users.getUserDetails(eventDetails.getSenderID()), eventDetails.getMsg(), processEvent );
+                chatai.sendMsg( users.getUserDetails(user), eventDetails.getMsg(), processEvent );
             }
         } else {
             console.log("Did not recieve any message from event object");
