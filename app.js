@@ -10,14 +10,13 @@
 
 var parseJson = require('parse-json');
 var chatinterface = require("./lib/mycoupefbinterface.js");
+var internalapi = require("./lib/api.js");
 var chatai = require("./lib/mycouperwatson.js");
-
 var Users = require("./lib/mycoupeusers.js");
-var users = new Users.Users();
-
 var msgEvent = require( './lib/mycoupeMsgEvent.js' );
 var MyCoopDocHand = require('./lib/mycoupedochandler.js' );
 var docHand = new MyCoopDocHand.MyCoopDocHandler();
+var users = new Users.Users();
 var util = require('util');
 var multer = require('multer')
 var upload = multer({ dest: 'uploads/' });
@@ -48,6 +47,15 @@ app.listen( app.get('port'));
 app.get('/', function(req, res ) {
     console.log("getting blank");
     res.sendStatus(403);          
+});
+
+// 
+//    This is our own API that user's can send their details to us
+//
+app.post('/api', function(req, res) {
+    console.log("Recieved call to internal api");
+    internalapi.processRequest(req);
+    res.sendStatus(200);
 });
 
 //
