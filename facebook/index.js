@@ -4,12 +4,10 @@
 //    Exports for facbook interface listenter.
 //
 //    author: carlos <solrak29@yahoo.com>
+//
 
-var facebooklistener = require("facebooklistener");
-var facebookrequester = require("facebookrequester");
-var facebookconfig = require("../config/facebook.js");
+var facebookiface = require("./facebookiface.js");
 
 module.exports = {
-    createlistener: facebookiface.listener
-    createrequester: facebookiface.requester
+    createFacebook: facebookiface.createFBIface
 }
