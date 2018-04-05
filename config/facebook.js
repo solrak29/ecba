@@ -5,19 +5,17 @@
 //
 //
 
-'use strict';
-
-//
-//  environment configurations checks that are required
-//
-
-[
-    'VALIDATION_TOKEN',
-    'PAGE_ACCESS_TOKEN'
-].forEach((name) => {
+[ 'VALIDATION_TOKEN', 
+  'PAGE_ACCESS_TOKEN' 
+].forEach( function(name){
     if ( !process.env[name]) {
-        throw new Error('Facebook configuration variables are missing ${name}')
+        throw new Error('Facebook configuration missing ' + name);
     }
 });
 
+const config = {
+    validation_token : process.env.VALIDATION_TOKEN,
+    page_access_token : process.env.PAGE_ACCESS_TOKEN
+};
 
+module.exports = config;

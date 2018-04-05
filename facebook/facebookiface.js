@@ -4,7 +4,11 @@
 //    interface to facebook messenger api
 //
 
-var facebookconfig = require("../config/facebook.js");
+try {
+    var facebookconfig = require("../config/facebook.js");
+} catch(ex) {
+    console.log(ex.message);
+}
 
 function createFBInterface() {
     return new Facebook(); 
@@ -12,6 +16,16 @@ function createFBInterface() {
 
 function Facebook( callback ) {
     this.callback = callback;
+}
+
+Facebook.prototype.processWebHookValidation = function ( req, res ) {
+    var challenge = null;
+    if ( req.query['hub.mode'] === 'subscribe' && 
+         req.query['hub.verify_token'] ===  facebookconfig.validation_tokent ) {
+         challenge = req.query['hub.challenge'];
+    } else {
+        throw new Error("Facebook validation failed; incorrect validation token");
+    }
 }
 
 Facebook.prototype.createlistener = function ( callback ) {
