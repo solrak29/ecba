@@ -1,24 +1,20 @@
 //
 //  facebook.test.js
 //
-//  test code to test the interface to facedbook chat
+//  test code to test the interface to facebook chat
 //
 //
 console.log("Testing Facebook Modules, Classes, and Configurations");
-facedbook = require('../facebook');
+facebook = require('../facebook');
+const util = require('util')
 
-facebook.createFacebook();
+console.log( "Checking configuration object: " + util.inspect(facebook, false, null));
+console.log("Checking type 1 " + typeof(facebook));
+console.log("Checking type 2 " + typeof(facebook.createFacebook));
 
-//facebook.createlistener().add( function (fbmsg) {
-//   var sender = fbmsg.getSender();
-//   var receiver = fbmsg.getReceiver();
-//   var messagetype = fbmsg.getMsgType();
-//   var msg = fbmsg.getMsg(); 
-//   console.out(msg);
-//});
+function callback(fb, msg) {
+    console.log( "In client call back : " + msg);
+    console.log( "Using fb version : " + fb.version);
 
-//facbook.createrequester().sendMsg(msg);
-
-
-
-
+}
+var fb = facebook.createFacebook(callback);
