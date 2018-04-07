@@ -8,6 +8,7 @@
 exports.createFBInterface = createFBInterface;
 module.export = Facebook;
 const util = require('util')
+const _fbmsg = require('./facebookmsg');
 
 const 
   bodyParser = require('body-parser'),
@@ -44,7 +45,8 @@ Facebook.prototype.processMessage = function( req, res ) {
     console.log( this.value + "Checking client call back: " + typeof(this.clientcallback));
     if ( this.clientcallback ) {
         console.log("Call the call back with a fb message type to be parse");
-        this.clientcallback( this,"test");
+        fbmsg = _fbmsg.createFBMessage(req.body);
+        this.clientcallback( this,fbmsg);
     } else {
         console.log("Here save the message until a call back has been registerd");
     }
