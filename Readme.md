@@ -10,7 +10,7 @@ Programming notes and structures are based on the following website:
 https://blog.risingstack.com/node-hero-node-js-project-structure-tutorial/
 The idea is to ensure that code structured by features.
 The idea is to use protypes for OO to save memory as talked about here:
-[https://veerasundar.com/blog/2014/02/javascript-prototype-methods-vs-object-methods/](https://veerasundar.com/blog/2014/02/javascript-prototype-methods-vs-object-methods/)
+https://veerasundar.com/blog/2014/02/javascript-prototype-methods-vs-object-methods/
 No tabs in files (use expandtab in vi/vim).
 Tab stops or spaces shall be 4 spaces.
 [GitHust MarkeDown Format for this file](https://guides.github.com/features/mastering-markdown/)
@@ -42,4 +42,5 @@ Resolved   Issued   Description
              maybe get this stuff into db (i.e. moongo db?)
 20180408 Use constants for facebook message type to be used instead of relying on text as text allows for typos that can cause runtime errors.
          We want to catch these errors way before running.  Maybe with node this is not the case?  A linter will be needed?
+20180408 Add a seciton for all your links below for reference with actual clickable links; fix formatting above where clickable links were attemtped.
 ```
