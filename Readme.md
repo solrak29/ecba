@@ -4,21 +4,30 @@
 
 ### *2018 (c)*
 
+**Programing Standards and Notes**
+```
 Programming notes and structures are based on the following website:
-
 https://blog.risingstack.com/node-hero-node-js-project-structure-tutorial/
-
 The idea is to ensure that code structured by features.
+The idea is to use protypes for OO to save memory as talked about here:
+https://veerasundar.com/blog/2014/02/javascript-prototype-methods-vs-object-methods/
+No tabs in files (use expandtab in vi/vim).
+Tab stops or spaces shall be 4 spaces.
+```
 
 **Log**
 ```
-20180406 Process message from fb and provide a response funcntionality
-20180406  Validated facebook verification
-20180406  Able to send message from fb page to facebook module.
+Resolved   Issued   Description
+20180408   20180408 From testing FBMSG1
+                    Fixed Lexical scoping of embededed functions in processmessage of of FacebooMsg object as told here:
+                    https://stackoverflow.com/questions/4700880/this-in-function-inside-prototype-function
+20180407   20180406 Process message from fb and provide a response funcntionality
+20180406   20180406 Validated facebook verification
+20180406   20180406 Able to send message from fb page to facebook module.
 ```
 **Todo**
 ```
-20180407 Testing (Process message from fb and provide a response funcntionality)
+20180407 Testing FBMSG1 (Process message from fb and provide a response funcntionality)
 20180406 Document Facebook setup in this document
 20180407 Logging utility to log provide log files - in fb message case to log messages that you are receiving.
 20180408 Logging utility shall provide lines numbers so they can be reference by line number.

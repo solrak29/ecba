@@ -8,7 +8,7 @@
 exports.createFBInterface = createFBInterface;
 module.export = Facebook;
 const util = require('util')
-const _fbmsg = require('./facebookmsg');
+_fbmsg = require('./facebookmsg');
 
 const 
   bodyParser = require('body-parser'),
@@ -42,11 +42,13 @@ function Facebook(callback) {
 }
 
 Facebook.prototype.processMessage = function( req, res ) {
-    console.log( this.value + "Checking client call back: " + typeof(this.clientcallback));
+    console.log( "Checking client call back: " + typeof(this.clientcallback));
     if ( this.clientcallback ) {
-        console.log("Call the call back with a fb message type to be parse");
+        console.log("Processing message...");
         fbmsg = _fbmsg.createFBMessage(req.body);
-        this.clientcallback( this,fbmsg);
+        fbmsg.processMessage(req.body);
+        console.log("Sending message (" + fbmsg.msgType +") to client...");
+        this.clientcallback( this, fbmsg);
     } else {
         console.log("Here save the message until a call back has been registerd");
     }
@@ -54,6 +56,7 @@ Facebook.prototype.processMessage = function( req, res ) {
 }
 
 Facebook.prototype.processWebHookValidation = function ( req, res ) {
+    console.log("Facebook validation check...");
     var challenge = null;
     if ( req.query['hub.mode'] === 'subscribe' && 
          req.query['hub.verify_token'] ===  facebookconfig.validation_token ) {

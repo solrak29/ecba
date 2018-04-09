@@ -6,6 +6,7 @@
 //
 //    carlos <solrak29@yahoo.com> 2018(c)
 
+const util = require('util');
 exports.createFBMessage = createFBMessage;
 module.export = FacebookMsg;
 
@@ -15,54 +16,61 @@ function createFBMessage(req) {
 
 function FacebookMsg(request) {
     this.request = request;
-    this.processMessage(request).bind(this); 
+    //this.msgType = "NA";
+    //this.userid = "NA";
+    //this.processMessage(request);
+}
+
+FacebookMsg.prototype.getMsgType = function() {
+    return this.msgType;
 }
 
 FacebookMsg.prototype.processMessage = function( request ) {
-    var data = request.body;
+    var me = this;
+    //console.log("Request received: " + util.inspect(request, false, null) );
     //console.log( JSON.stringify(data) ); // for debugging
-    if ( data.object == 'page') {
-        consloe.log("Processing Facebook Message");
+    if ( request.object == 'page') {
+        console.log("Processing Facebook Message");
         //
         //  Facebook may batch messages so you have to iterate, in general it is one entry.
         //
-        data.entry.forEach( function(pageEntry) {
+        request.entry.forEach( function(pageEntry) {
             var pageID = pageEntry.id;
             var timeOfEvent = pageEntry.time;
             pageEntry.messaging.forEach( function(messageEvent) {
-                this.userid = messageEvent.sender.id; // sender or user chatting
-                this.pageid = messageEvent.recipient.id; // the fb page app this chat bot
+                me.userid = messageEvent.sender.id; // sender or user chatting
+                me.pageid = messageEvent.recipient.id; // the fb page app this chat bot
                 
                 // message events
                 if ( messageEvent.optin) {
                     console.log("Received Optin Event -- skipping");
-                    this.msgType = "OPTIN";
+                    me.msgType = "OPTIN";
                 } else if ( messageEvent.message) {
                     console.log("Received Message Event -- processing");
-                    this.msgType = "MSG";
-                    this.msgtime = messageEvent.timestamp;
-                    this.msgtext = messageEvent.message.text;
+                    me.msgType = "MSG";
+                    me.msgtime = messageEvent.timestamp;
+                    me.msgtext = messageEvent.message.text;
                 } else if ( messageEvent.delivery ) {
                     console.log("Received Delivery Confirmation -- processing");
-                    this.msgType = "ACK";
+                    me.msgType = "ACK";
                 } else if ( messageEvent.postback) {
                     console.log("Received Post Back -- skipping" );
-                    this.msgType = "POST_BACK";
+                    me.msgType = "POST_BACK";
                 } else if ( messageEvent.read ) {
                     console.log("Received Read Event -- processing");
-                    this.msgType = "READ";
+                    me.msgType = "READ";
                 } else if ( messageEvent.account_linking ) {
                     console.log("Received Account Linking Event -- skipping");
-                    this.msgType = "ACCOUNT_LINKING";
+                    me.msgType = "ACCOUNT_LINKING";
                 } else {
                     console.log("Received Unkown Event");
-                    this.msgType = "UNKNOWN";
+                    me.msgType = "UNKNOWN";
                 }
             }); // end for each 
         }); // end for each
     } else {
         console.log(" Recieved a non-page event ");
-        this.msgType = "UNKNOWN";
+        me.msgType = "UNKNOWN";
     }
 }
 
