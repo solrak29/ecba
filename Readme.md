@@ -10,9 +10,11 @@ Programming notes and structures are based on the following website:
 https://blog.risingstack.com/node-hero-node-js-project-structure-tutorial/
 The idea is to ensure that code structured by features.
 The idea is to use protypes for OO to save memory as talked about here:
-https://veerasundar.com/blog/2014/02/javascript-prototype-methods-vs-object-methods/
+[https://veerasundar.com/blog/2014/02/javascript-prototype-methods-vs-object-methods/](https://veerasundar.com/blog/2014/02/javascript-prototype-methods-vs-object-methods/)
 No tabs in files (use expandtab in vi/vim).
 Tab stops or spaces shall be 4 spaces.
+[GitHust MarkeDown Format for this file](https://guides.github.com/features/mastering-markdown/)
+
 ```
 
 **Log**
@@ -20,7 +22,7 @@ Tab stops or spaces shall be 4 spaces.
 Resolved   Issued   Description
 20180408   20180408 From testing FBMSG1
                     Fixed Lexical scoping of embededed functions in processmessage of of FacebooMsg object as told here:
-                    https://stackoverflow.com/questions/4700880/this-in-function-inside-prototype-function
+                    [https://stackoverflow.com/questions/4700880/this-in-function-inside-prototype-function](https://stackoverflow.com/questions/4700880/this-in-function-inside-prototype-function)
 20180407   20180406 Process message from fb and provide a response funcntionality
 20180406   20180406 Validated facebook verification
 20180406   20180406 Able to send message from fb page to facebook module.
