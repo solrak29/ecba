@@ -41,6 +41,41 @@ function Facebook(callback) {
     this.fbapp.listen(this.fbapp.get('port'));
 }
 
+Facebook.prototype.sendMessage = function( msg ) {
+    console.log("Sending message...");
+    if ( msg.constructor.name == "FacebookMsg" ) {
+        var msgtofb = {
+	    recipient: {
+	        id: msg.userid
+	    },
+	    message: {
+	        text: msg.msgtext,
+		metadata: "DEVELPER_DEFINED_METADATA"
+	    }
+        };
+	request({
+	    uri:  'https://graph.facebook.com/v2.6/me/messages',
+	    qs : { access_token: facebookconfig.page_access_token },
+	    method: 'POST',
+	    json: msgtofb
+	    }, function (error, response, body) {
+	        if ( !error && response.statusCode == 200 ) {
+		    var recipientid = body.recipeint_id;
+		    var messageid = body.message_id;
+		    if ( messageid ) {
+                        console.log("Successfully sent message with id %s to recipient %s", messageid, recipientid);
+		    } else {
+                        console.log("Successfully called Send API for recipient %s", recipientid);
+                    }
+		} else {
+                    console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+		}
+	    });
+    } else {
+        throw new Error ("Not a facebookmsg type");
+    }
+}
+
 Facebook.prototype.processMessage = function( req, res ) {
     console.log( "Checking client call back: " + typeof(this.clientcallback));
     if ( this.clientcallback ) {
@@ -52,7 +87,7 @@ Facebook.prototype.processMessage = function( req, res ) {
     } else {
         console.log("Here save the message until a call back has been registerd");
     }
-    res.sendStatus(200);
+    res.status(200).send('EVENT_RECEIVED');
 }
 
 Facebook.prototype.processWebHookValidation = function ( req, res ) {

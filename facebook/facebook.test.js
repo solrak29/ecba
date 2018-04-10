@@ -24,5 +24,9 @@ function callback(fb, msg) {
         console.log( "Receive message event : " + msg.msgType);
     }
 
+    msg.setText("I received your message");
+
+    fb.sendMessage(msg);
+
 }
 var fb = facebook.createFacebook(callback);

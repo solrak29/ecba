@@ -20,9 +20,13 @@ Tab stops or spaces shall be 4 spaces.
 **Log**
 ```
 Resolved   Issued   Description
+           20180406 Document Facebook setup in this document - started
+20180409   20180409 Testing FBMSG1
+                    Tested validation of using sendMessage with facebookmsg type
 20180408   20180408 From testing FBMSG1
                     Fixed Lexical scoping of embededed functions in processmessage of of FacebooMsg object as told here:
                     [https://stackoverflow.com/questions/4700880/this-in-function-inside-prototype-function](https://stackoverflow.com/questions/4700880/this-in-function-inside-prototype-function)
+           20180407 Testing FBMSG1 (Process message from fb and provide a response funcntionality) - started
 20180407   20180406 Process message from fb and provide a response funcntionality
 20180406   20180406 Validated facebook verification
 20180406   20180406 Able to send message from fb page to facebook module.

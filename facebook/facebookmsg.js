@@ -21,6 +21,10 @@ function FacebookMsg(request) {
     //this.processMessage(request);
 }
 
+FacebookMsg.prototype.setText = function ( msgtext ) {
+    this.msgtext = msgtext;
+}
+
 FacebookMsg.prototype.getMsgType = function() {
     return this.msgType;
 }
