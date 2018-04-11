@@ -60,7 +60,7 @@ Facebook.prototype.sendMessage = function( msg ) {
 	    json: msgtofb
 	    }, function (error, response, body) {
 	        if ( !error && response.statusCode == 200 ) {
-		    var recipientid = body.recipeint_id;
+		    var recipientid = body.recipient_id;
 		    var messageid = body.message_id;
 		    if ( messageid ) {
                         console.log("Successfully sent message with id %s to recipient %s", messageid, recipientid);

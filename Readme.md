@@ -20,10 +20,14 @@ Tab stops or spaces shall be 4 spaces.
 **Log**
 ```
 Resolved   Issued   Description
+20180409   20180410 Testing FBMSG1
+           20180410 Fixed the name of "recipient object mispelling
+           20180410 Fixed processing echo as a initial message
+	   20180410 Fixed sending the message with every response from facebook in test.
            20180406 Document Facebook setup in this document - started
 20180409   20180409 Testing FBMSG1
                     Tested validation of using sendMessage with facebookmsg type
-20180408   20180408 From testing FBMSG1
+20180408   20180408 Testing FBMSG1
                     Fixed Lexical scoping of embededed functions in processmessage of of FacebooMsg object as told here:
                     [https://stackoverflow.com/questions/4700880/this-in-function-inside-prototype-function](https://stackoverflow.com/questions/4700880/this-in-function-inside-prototype-function)
            20180407 Testing FBMSG1 (Process message from fb and provide a response funcntionality) - started
@@ -33,6 +37,10 @@ Resolved   Issued   Description
 ```
 **Todo**
 ```
+20180410 Document what the mids string is.
+20180410 Test script should store the mids string to ensure that it receives all the messages that is sent.
+20180410 Time should be converted to readable time format.
+20180410 Time should be recorded on how long it takes to receives messages.
 20180407 Testing FBMSG1 (Process message from fb and provide a response funcntionality)
 20180406 Document Facebook setup in this document
 20180407 Logging utility to log provide log files - in fb message case to log messages that you are receiving.
@@ -47,4 +55,5 @@ Resolved   Issued   Description
 20180408 Use constants for facebook message type to be used instead of relying on text as text allows for typos that can cause runtime errors.
          We want to catch these errors way before running.  Maybe with node this is not the case?  A linter will be needed?
 20180408 Add a seciton for all your links below for reference with actual clickable links; fix formatting above where clickable links were attemtped.
+20180410 Add constant to each module/class so that constant can be ussed at the beginning of each line for logging.
 ```

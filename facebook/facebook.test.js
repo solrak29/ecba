@@ -4,29 +4,30 @@
 //  test code to test the interface to facebook chat
 //
 //
-console.log("Testing Facebook Modules, Classes, and Configurations");
+
+var TestMsg = "[FACEBOOK_TEST_2018_04] ";
+console.log(TestMsg + "Testing Facebook Modules, Classes, and Configurations");
 facebook = require('../facebook');
-console.log( "Using fb version : " + facebook.version);
+console.log( TestMsg + "Using fb version : " + facebook.version);
 const util = require('util');
 
-console.log( "Checking configuration object: " + util.inspect(facebook, false, null));
-console.log("Checking type 1 " + typeof(facebook));
-console.log("Checking type 2 " + typeof(facebook.createFacebook));
+console.log( TestMsg + "Checking configuration object: " + util.inspect(facebook, false, null));
+console.log(TestMsg + "Checking type 1 " + typeof(facebook));
+console.log(TestMsg + "Checking type 2 " + typeof(facebook.createFacebook));
 
 function callback(fb, msg) {
-    console.log( util.inspect(msg, false, null));
-    console.log( "In client call back recieve message type : " + msg.getMsgType());
-    console.log( "Received message from : " + msg.userid);
+    console.log( TestMsg + util.inspect(msg, false, null));
+    console.log( TestMsg + "In client call back recieve message type : " + msg.getMsgType());
+    console.log( TestMsg + "Received message from : " + msg.userid);
     if ( msg.msgType == "MSG" ) {
-        console.log( "Receive message event : " + msg.msgType);
-        console.log( "Received message at ( " + msg.msgtime + " ) : " + msg.msgtext );
+        console.log( TestMsg + "Receive message event : " + msg.msgType);
+        console.log( TestMsg + "Received message at ( " + msg.msgtime + " ) : " + msg.msgtext );
+        console.log( TestMsg + "Setting message to what is received");
+        msg.setText(TestMsg + "I received your message (" + msg.msgtext + ")");
+        fb.sendMessage(msg);
     } else {
-        console.log( "Receive message event : " + msg.msgType);
+        console.log( TestMsg + "Receive message event : " + msg.msgType);
     }
+} // end test function call back
 
-    msg.setText("I received your message");
-
-    fb.sendMessage(msg);
-
-}
 var fb = facebook.createFacebook(callback);

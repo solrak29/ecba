@@ -50,10 +50,14 @@ FacebookMsg.prototype.processMessage = function( request ) {
                     console.log("Received Optin Event -- skipping");
                     me.msgType = "OPTIN";
                 } else if ( messageEvent.message) {
-                    console.log("Received Message Event -- processing");
-                    me.msgType = "MSG";
-                    me.msgtime = messageEvent.timestamp;
-                    me.msgtext = messageEvent.message.text;
+                    if ( messageEvent.message.is_echo == true ) {
+		        me.msgType = "ECHO";
+                    } else {
+                        console.log("Received Message Event -- processing");
+                        me.msgType = "MSG";
+                        me.msgtime = messageEvent.timestamp;
+                        me.msgtext = messageEvent.message.text;
+                    }
                 } else if ( messageEvent.delivery ) {
                     console.log("Received Delivery Confirmation -- processing");
                     me.msgType = "ACK";
