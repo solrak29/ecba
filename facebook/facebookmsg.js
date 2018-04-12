@@ -41,6 +41,7 @@ FacebookMsg.prototype.processMessage = function( request ) {
         request.entry.forEach( function(pageEntry) {
             var pageID = pageEntry.id;
             var timeOfEvent = pageEntry.time;
+            console.log("Received time : " + new Date(timeOfEvent));
             pageEntry.messaging.forEach( function(messageEvent) {
                 me.userid = messageEvent.sender.id; // sender or user chatting
                 me.pageid = messageEvent.recipient.id; // the fb page app this chat bot
@@ -56,6 +57,7 @@ FacebookMsg.prototype.processMessage = function( request ) {
                         console.log("Received Message Event -- processing");
                         me.msgType = "MSG";
                         me.msgtime = messageEvent.timestamp;
+                        console.log("Message time : " + new Date(me.msgtime));
                         me.msgtext = messageEvent.message.text;
                     }
                 } else if ( messageEvent.delivery ) {

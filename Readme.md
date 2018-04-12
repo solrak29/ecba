@@ -20,6 +20,11 @@ Tab stops or spaces shall be 4 spaces.
 **Log**
 ```
 Resolved   Issued   Description
+20180411   20180411 Integrated remaining facebook functions to set typing bubbles and get user details.
+20180411   20180411 Controller Design
+20180411   20180410 Time should be converted to readable time format.
+20180411   20180410 Document what the mids string is.
+20180411   20180411 Adding mandatory message type to send message function for facebook requirement as of May 2018.
 20180409   20180410 Testing FBMSG1
            20180410 Fixed the name of "recipient object mispelling
            20180410 Fixed processing echo as a initial message
@@ -37,9 +42,7 @@ Resolved   Issued   Description
 ```
 **Todo**
 ```
-20180410 Document what the mids string is.
 20180410 Test script should store the mids string to ensure that it receives all the messages that is sent.
-20180410 Time should be converted to readable time format.
 20180410 Time should be recorded on how long it takes to receives messages.
 20180407 Testing FBMSG1 (Process message from fb and provide a response funcntionality)
 20180406 Document Facebook setup in this document
@@ -56,4 +59,7 @@ Resolved   Issued   Description
          We want to catch these errors way before running.  Maybe with node this is not the case?  A linter will be needed?
 20180408 Add a seciton for all your links below for reference with actual clickable links; fix formatting above where clickable links were attemtped.
 20180410 Add constant to each module/class so that constant can be ussed at the beginning of each line for logging.
+20180411 Review the Facebook Page-level subscription versus the app-level subscription that will take place in Dec, 31, 2018.
+         https://developers.facebook.com/docs/messenger-platform/policy/app-to-page-subscriptions
+20180411 Test typing bubbles work and getting user details; store as part of message objects
 ```

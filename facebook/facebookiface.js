@@ -45,6 +45,7 @@ Facebook.prototype.sendMessage = function( msg ) {
     console.log("Sending message...");
     if ( msg.constructor.name == "FacebookMsg" ) {
         var msgtofb = {
+            message_type: "RESPONSE",
 	    recipient: {
 	        id: msg.userid
 	    },
@@ -102,6 +103,86 @@ Facebook.prototype.processWebHookValidation = function ( req, res ) {
     }
     res.status(200).send(challenge);
 }
+
+Facebook.prototype.getUserProfile = function ( userID ) {
+    request( {
+        uri: 'https://graph.facebook.com/v2.6/' + userID + '?fields=first_name,last_name,profile_pic,locale,timezone,gender',
+	qs: { access_token : facebookconfig.page_access_token },
+	method: 'GET'
+    }, function( err, response, body ) {
+    // See what details from FB we can extract about the sender
+        if ( err ) {
+            console.log( "From getting name details: " + err );
+            callback( null );
+        } else {
+            var data = JSON.parse(body);
+            var userprofile = { firstname: data.first_name,
+                                lastname: data.last_name,
+                                profile_pic: data.profile_pic,
+                                locale: data.locale,
+                                timezone: data.timezone,
+                                gender: data.gender }; 
+	    console.log( "Response from  graph => " + data.first_name );
+            callback( userprofile );
+        }
+    });
+}
+
+Facebook.prototype.sendTypingBubbleOff = function ( recipientId ) {
+  var msgtofb = {
+    recipient: {
+      id: recipientId
+    },
+    sender_action: "TYPING_OFF"
+  };
+    request({
+        uri:  'https://graph.facebook.com/v2.6/me/messages',
+	qs : { access_token: facebookconfig.page_access_token },
+	method: 'POST',
+	json: msgtofb
+	}, function (error, response, body) {
+	    if ( !error && response.statusCode == 200 ) {
+                 var recipientid = body.recipient_id;
+		 var messageid = body.message_id;
+		 if ( messageid ) {
+                     console.log("Successfully sent message with id %s to recipient %s", messageid, recipientid);
+		 } else {
+                     console.log("Successfully called Send API for recipient %s", recipientid);
+                 }
+	    } else {
+                console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+	    }
+    });
+
+}
+
+Facebook.prototype.sendTypingBubble = function ( recipientId ) {
+    var msgtofb = {
+        recipient: {
+          id: recipientId
+        },
+        sender_action: "TYPING_ON"
+    };
+    request({
+        uri:  'https://graph.facebook.com/v2.6/me/messages',
+	qs : { access_token: facebookconfig.page_access_token },
+	method: 'POST',
+	json: msgtofb
+	}, function (error, response, body) {
+	    if ( !error && response.statusCode == 200 ) {
+                 var recipientid = body.recipient_id;
+		 var messageid = body.message_id;
+		 if ( messageid ) {
+                     console.log("Successfully sent message with id %s to recipient %s", messageid, recipientid);
+		 } else {
+                     console.log("Successfully called Send API for recipient %s", recipientid);
+                 }
+	    } else {
+                console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+	    }
+    });
+}
+
 
 Facebook.prototype.version = function() {
     return this.version;
