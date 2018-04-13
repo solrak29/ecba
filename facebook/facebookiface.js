@@ -21,6 +21,7 @@ try {
     var facebookconfig = require("../config/facebook.js");
 } catch(ex) {
     console.log(ex.message);
+    process.exit(1);
 }
 
 function createFBInterface(callback) {

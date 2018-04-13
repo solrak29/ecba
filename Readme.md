@@ -20,6 +20,8 @@ Tab stops or spaces shall be 4 spaces.
 **Log**
 ```
 Resolved   Issued   Description
+20180412   20180412 Exited after facebook configs are not found (not reason for app to continue).
+           20180412 Started Controller Code Proto
 20180411   20180411 Integrated remaining facebook functions to set typing bubbles and get user details.
 20180411   20180411 Controller Design
 20180411   20180410 Time should be converted to readable time format.
@@ -42,6 +44,7 @@ Resolved   Issued   Description
 ```
 **Todo**
 ```
+20180412 Look at using the abstract and/or template pattern for the response and message objects
 20180410 Test script should store the mids string to ensure that it receives all the messages that is sent.
 20180410 Time should be recorded on how long it takes to receives messages.
 20180407 Testing FBMSG1 (Process message from fb and provide a response funcntionality)
