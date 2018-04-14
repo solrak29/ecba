@@ -20,6 +20,9 @@ Tab stops or spaces shall be 4 spaces.
 **Log**
 ```
 Resolved   Issued   Description
+           20180414 Created console bot to receive messages and test controller.
+                    Will expand this to eventually handle both sides.
+           20180414 Testing having controler recieve and send back message
 20180412   20180412 Exited after facebook configs are not found (not reason for app to continue).
            20180412 Started Controller Code Proto
 20180411   20180411 Integrated remaining facebook functions to set typing bubbles and get user details.
@@ -44,6 +47,9 @@ Resolved   Issued   Description
 ```
 **Todo**
 ```
+20180415 Test Console interface by having console read and write and/or integrated with controller for testing (need to decide which test is viable).
+         I'ts a question of time, but discipoine would mean that interface should be testable as a standlone.
+         This would mean that the conosle could function as chat interface.
 20180412 Look at using the abstract and/or template pattern for the response and message objects
 20180410 Test script should store the mids string to ensure that it receives all the messages that is sent.
 20180410 Time should be recorded on how long it takes to receives messages.
@@ -65,4 +71,11 @@ Resolved   Issued   Description
 20180411 Review the Facebook Page-level subscription versus the app-level subscription that will take place in Dec, 31, 2018.
          https://developers.facebook.com/docs/messenger-platform/policy/app-to-page-subscriptions
 20180411 Test typing bubbles work and getting user details; store as part of message objects
+20180412 Use const values for any hardcoded text items.  Suchs as "MSG" type.
+20180414 Console source/desitnation work.
+20180414 Console remote implementation where users can set a remote option and use the console bot from a remote location.
+         this will require a client componenet that they can use and/or download.
+20180414 Console remote client application
+20180415 You building the same strcuture of code for each feature you add.  You should create a utility that where you can just
+         create the strcuture/template code to follow; it will save time.  Perhaps npm addFeature?  Node addfeature?
 ```

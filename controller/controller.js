@@ -28,14 +28,22 @@ function ECBAController() {
 
     this.sourcelist.forEach(function(value) {
         if ( value == 'facebook' ) {
-	    // trying to requires 
-	    me._fb = require( "../"+value)
-        me._fb.createFacebook( this.sourcecallback.bind(this) )
-	}
+	        // trying to requires 
+	        me._fb = require( "../"+value);
+            me._fb.createFacebook( me.sourcecallback.bind(me) );
+	    }
     });
 }
 
-ECBAController.prototype.sourcecallback = function() {
-    
+ECBAController.prototype.addSourceCallBack = function ( callback ) {
+    this.callback = callback;
+}
+
+ECBAController.prototype.sourcecallback = function( fb, fbmsg) {
+   if ( this.callback ) {
+       this.callback(fb, fbmsg ); 
+   } else {
+       console.log( "there is no callback assigned yet");
+   }
 }
 
