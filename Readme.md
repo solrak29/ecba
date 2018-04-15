@@ -14,12 +14,14 @@ https://veerasundar.com/blog/2014/02/javascript-prototype-methods-vs-object-meth
 No tabs in files (use expandtab in vi/vim).
 Tab stops or spaces shall be 4 spaces.
 [GitHust MarkeDown Format for this file](https://guides.github.com/features/mastering-markdown/)
-
+Interesting topic on stream processing in js:
+https://docs.nodejitsu.com/articles/command-line/how-to-prompt-for-command-line-input/
 ```
 
 **Log**
 ```
 Resolved   Issued   Description
+           20180414 Testing console code without controller - in progress
            20180414 Created console bot to receive messages and test controller.
                     Will expand this to eventually handle both sides.
            20180414 Testing having controler recieve and send back message
@@ -78,4 +80,5 @@ Resolved   Issued   Description
 20180414 Console remote client application
 20180415 You building the same strcuture of code for each feature you add.  You should create a utility that where you can just
          create the strcuture/template code to follow; it will save time.  Perhaps npm addFeature?  Node addfeature?
+20180415  Make history lines configurable for console chat ; its noted in the code
 ```

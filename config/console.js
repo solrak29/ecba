@@ -9,7 +9,9 @@
   'CONSOLE_REMOTE_PORT'
 ].forEach( function(name){
     if ( !process.env[name]) {
-        if ( name == "CONSOLE_REMOTE_PORT" ) {
+        if ( name == "CONSOLE_REMOTE" ) {
+            process.env["CONSOLE_REMOTE"] = "False";
+        } else if ( name == "CONSOLE_REMOTE_PORT" ) {
             if ( process.env['CONSOLE_REMOTE'] && process.env['CONSOLE_REMOTE'] == 'True' ) {
                 throw new Error( "Console Bot missing configuration for Remote functionality");
             }

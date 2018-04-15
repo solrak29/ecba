@@ -9,6 +9,6 @@
 var console = require("./console.js");
 
 module.exports = {
-    createECBAConsoleBot: console.createECBAConsoleBot
+    createECBAConsoleBot: console.createECBAConsoleBot,
     createECBAConsoleChat: console.createECBAConsoleChat
 }
