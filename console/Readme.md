@@ -26,6 +26,7 @@ is running.  Remotely, they would use the client interface (or web) to be on the
 which ever side of the conversation that they want to be.
 
 **Testing**
+
 In order to test the console as a single module, the two chat interfaces are used.
 Everything is coded local.  The single test process will instantiate both version
 to initiate and send communication between the two modules.  The test script shall
