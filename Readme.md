@@ -21,6 +21,10 @@ https://docs.nodejitsu.com/articles/command-line/how-to-prompt-for-command-line-
 **Log**
 ```
 Resolved   Issued   Description
+           20180415 Testing case where console is chat is not connected to console bot.
+                    Testing is still in progress on the console product.
+           20180415 Testing console code without controller - in progress
+           20180415 Adding project board to this project
            20180414 Testing console code without controller - in progress
            20180414 Created console bot to receive messages and test controller.
                     Will expand this to eventually handle both sides.
