@@ -31,3 +31,12 @@ In order to test the console as a single module, the two chat interfaces are use
 Everything is coded local.  The single test process will instantiate both version
 to initiate and send communication between the two modules.  The test script shall
 verifyt what is sent and received by both sides.
+
+**Notes**
+
+Implemnetd the use of readline functionality.  But in using the two states to test
+against each other I found that you can't assign stdin to bot and you need some form
+of pip mechanism.  This is where streams come into play.  It would seem that I should
+just use streams outright and I may evovle to that but for now I will incorrporate 
+the use of streams with the readline module.  These modules are part of node and
+are great since we don't need to npm anything here.  

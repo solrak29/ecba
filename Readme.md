@@ -19,8 +19,16 @@ https://docs.nodejitsu.com/articles/command-line/how-to-prompt-for-command-line-
 ```
 
 **Log**
+
+This seciton will log my activity as I go along.  Essentially, if there is no resolved date that
+simply means that the work is still in progress.  I am thinking of using the project board in
+github, but it seems too combursome at this stage.  I feel it will become useful if and when I get
+teams of folks working on this and/or this is live in production and issues are submitted.
+
 ```
 Resolved   Issued   Description
+           20180416 Added the use of streams to have two instances of console to talk to each other. -- in progress.
+           20180416 Adding function to close console chat for testing different conditions
            20180415 Testing case where console is chat is not connected to console bot.
                     Testing is still in progress on the console product.
            20180415 Testing console code without controller - in progress
