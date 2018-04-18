@@ -27,6 +27,9 @@ teams of folks working on this and/or this is live in production and issues are 
 
 ```
 Resolved   Issued   Description
+           20180417 Console testing delayed as stream declaration doesn't work aa documented.
+                    this caused an error: const {Readable, Writable} = require('stream');
+                    had to move this wayt: const stream = require('stream').Readable for example.
            20180416 Added the use of streams to have two instances of console to talk to each other. -- in progress.
            20180416 Adding function to close console chat for testing different conditions
            20180415 Testing case where console is chat is not connected to console bot.
