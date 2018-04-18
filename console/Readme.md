@@ -40,3 +40,8 @@ of pip mechanism.  This is where streams come into play.  It would seem that I s
 just use streams outright and I may evovle to that but for now I will incorrporate 
 the use of streams with the readline module.  These modules are part of node and
 are great since we don't need to npm anything here.  
+
+**High Level Design**
+
+![High Level Design](https://raw.githubusercontent.com/solrak29/ecba/master/console/highlevelconsole.jpg)
+
