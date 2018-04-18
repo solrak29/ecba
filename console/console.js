@@ -10,8 +10,8 @@ try{
     console.log(ex.message);
 }
 
+const stream = require('stream').Transform;
 const readline = require('readline');
-const { Readable, Writable } = require('stream');
 exports.createECBAConsoleChat = createECBAConsoleChat;
 exports.createECBAConsoleBot = createECBAConsoleBot;
 module.export = ECBAConsole;
@@ -26,13 +26,13 @@ const CHAT_NOT_STARTED=0;
 
 function createECBAConsoleChat() {
     var console = new ECBAConsole( AS_CHAT);
-    console.incoming = new Writeable();
+    console.incoming = new stream();
     return console;
 }
 
 function createECBAConsoleBot() {
     var console = new ECBAConsole( AS_BOT );
-    console.incoming = new Readable();
+    console.incoming = new stream();
     return console;
 }
 
@@ -64,26 +64,48 @@ ECBAConsole.prototype.stopChat = function() {
     this.state = CHAT_CLOSED;
 }
 
-ECBAConsole.prototype.chat() {
+ECBAConsole.prototype.chat = function() {
     var config = {};
-    if ( this.type == AS_BOT ) {
+    if ( this.type == AS_CHAT ) {
         config = {
             input: process.stdin,
-            output: this.client.incoming,
-            terminal: false,
-            hisotrySize: 100, 
-            removeHistoryDuplicates: true
-        }
-    } else {
-        config = {
-            input: this.client.incoming,
             output: process.stdout,
             terminal: false,
             hisotrySize: 100, 
             removeHistoryDuplicates: true
-        }
+        };
+        this.readconsole = readline.createInterface(config);
+    } else {
     }
-    this.readconsole = readline.createInterface(config);
+
+
+    if (this.type == AS_CHAT) {
+        this.readconsole.setPrompt(CHAT_PROMPT);
+    }
+
+    //
+    // Captures when a line comes through
+    //
+    this.readconsole.on('line', (input) => {
+        var msg = input;
+        console.log( "["+this.type+"]" + " Received: " + msg );
+        this.readconsole.prompt([true]);
+    });
+
+    this.readconsole.on('error', (error) => {
+        throw(error);
+    });
+
+    this.readconsole.on('close', () => {
+        console.log("Chat Conneciton Closed");
+    });
+
+    //
+    // Bot will never prompt for ouput it will always require an interface
+    //
+    if ( this.type == AS_CHAT ) {
+        this.readconsole.prompt([true]);
+    }
 }
 
 ECBAConsole.prototype.startChat = function(errhandler, client) {
@@ -95,35 +117,6 @@ ECBAConsole.prototype.startChat = function(errhandler, client) {
     } else {
         throw new Error( "No client defined before starting chat");
     }
-
-     if (this.type == AS_BOT) {
-         this.readconsole.setPrompt(BOT_PROMPT);
-     } else {
-         this.readconsole.setPrompt(CHAT_PROMPT);
-     }
-
-     this.readconsole.on('line', (input) => {
-         var msg = input;
-         console.log( this.type + " Sending: " + msg );
-         //try {
-             //this.sendMsg(msg);
-         //} catch (err) {
-         //    errhandler(err);
-        // }
-         //this.readconsole.prompt([true]);
-     });
-
-     this.readconsole.on('error', (error) => {
-         throw(error);
-     });
-
-     this.readconsole.on('close', () => {
-         console.log("Chat Conneciton Closed");
-     });
-
-     if ( this.type == AS_CHAT ) {
-         this.readconsole.prompt([true]);
-     }
 }
 
 ECBAConsole.prototype.addClient = function ( client ) {
