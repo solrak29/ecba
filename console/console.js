@@ -26,13 +26,15 @@ const CHAT_NOT_STARTED=0;
 
 function createECBAConsoleChat() {
     var console = new ECBAConsole( AS_CHAT);
-    console.incoming = new stream();
+    console.incoming = new stream( { objectMode: true } );
+    console.incoming._transform = console._received.bind(console);
     return console;
 }
 
 function createECBAConsoleBot() {
     var console = new ECBAConsole( AS_BOT );
-    console.incoming = new stream();
+    console.incoming = new stream( { objectMode: true });
+    console.incoming._transform = console._received.bind(console);
     return console;
 }
 
@@ -49,6 +51,13 @@ function ECBAConsole(type) {
     }
     
 }
+
+ECBAConsole.prototype._received = function( msg, _, _ ) {
+    this.buffer = msg;
+    //console.log( "["+ this.type + ":stream] " + msg);
+    this.callback(msg);
+}
+
 
 ECBAConsole.prototype.isOpen = function() {
     var isopen = false;
@@ -75,44 +84,43 @@ ECBAConsole.prototype.chat = function() {
             removeHistoryDuplicates: true
         };
         this.readconsole = readline.createInterface(config);
-    } else {
-    }
-
-
-    if (this.type == AS_CHAT) {
         this.readconsole.setPrompt(CHAT_PROMPT);
-    }
+        //
+        // Captures when a line comes through
+        //
+        this.readconsole.on('line', (input) => {
+            var msg = input;
+            //console.log( "["+this.type+"]" + " Received: " + msg );
+            this.incoming.push(msg);
+            this.readconsole.prompt([true]);
+        });
 
-    //
-    // Captures when a line comes through
-    //
-    this.readconsole.on('line', (input) => {
-        var msg = input;
-        console.log( "["+this.type+"]" + " Received: " + msg );
+        this.readconsole.on('error', (error) => {
+            throw(error);
+        });
+
+        this.readconsole.on('close', () => {
+            console.log("Chat Conneciton Closed");
+        });
+        this.readconsole.on('pause', () => {
+            console.log("Chat paused");
+        });
+
+        //
+        // Bot will never prompt for ouput it will always require an interface
+        //
         this.readconsole.prompt([true]);
-    });
-
-    this.readconsole.on('error', (error) => {
-        throw(error);
-    });
-
-    this.readconsole.on('close', () => {
-        console.log("Chat Conneciton Closed");
-    });
-
-    //
-    // Bot will never prompt for ouput it will always require an interface
-    //
-    if ( this.type == AS_CHAT ) {
-        this.readconsole.prompt([true]);
-    }
+    } 
+    //console.log( "["+this.type+"] Started...");
 }
 
-ECBAConsole.prototype.startChat = function(errhandler, client) {
-    console.log( this.type + " - Starting chat...");
+ECBAConsole.prototype.startChat = function(client, callback, errhandler) {
+    //console.log( this.type + " - Starting chat...");
     this.state = CHAT_STARTED;
     if ( client ) {
         this.addClient(client);
+        this.callback = callback;
+        this.errhandler = errhandler;
         this.chat();
     } else {
         throw new Error( "No client defined before starting chat");
@@ -120,24 +128,14 @@ ECBAConsole.prototype.startChat = function(errhandler, client) {
 }
 
 ECBAConsole.prototype.addClient = function ( client ) {
-    console.log("Adding client..." + typeof(client));
-    this.client = client;
-    this.clientcallback = client.sourcecallback;
+    //console.log("Adding client..." + typeof(client));
+    this.incoming.pipe(client.incoming);
+}
+
+ECBAConsole.prototype.addCallback = function( callback ) {
+    this.callback = callback;
 }
 
 ECBAConsole.prototype.sendMsg = function(msg) {
-    if ( !this.client ) {
-        console.log("No client was added...");
-        throw new Error("No client was added");
-    } else if ( this.client && this.client.state != CHAT_STARTED ) {
-        console.log("Client is not listening");
-        throw new Error("Client is not listening");
-    } else {
-        this.client.readconsole.write(msg);
-    }
+    this.incoming.push(msg);
 }
-
-ECBAConsole.prototype.sourcecallback = function( msg) {
-    console.log( this.type + "Received : " + msg );
-}
-
