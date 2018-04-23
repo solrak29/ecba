@@ -12,3 +12,6 @@ One case scenario is that we have Facebook to Watson interface which
 will be the default.
 
 ```
+
+
+![High Level Design](https://raw.githubusercontent.com/solrak29/ecba/master/controller/NapkinScratchDesign.jpg)
