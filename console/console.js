@@ -52,10 +52,12 @@ function ECBAConsole(type) {
     
 }
 
-ECBAConsole.prototype._received = function( msg, _, _ ) {
+ECBAConsole.prototype._received = function( msg, _, done ) {
     this.buffer = msg;
+    console.log("Calling callback");
     //console.log( "["+ this.type + ":stream] " + msg);
     this.callback(msg);
+    done();
 }
 
 
@@ -91,18 +93,14 @@ ECBAConsole.prototype.chat = function() {
         this.readconsole.on('line', (input) => {
             var msg = input;
             //console.log( "["+this.type+"]" + " Received: " + msg );
+            console.log("Sending message to bot...");
             this.incoming.push(msg);
             this.readconsole.prompt([true]);
-        });
-
-        this.readconsole.on('error', (error) => {
+        }).on('error', (error) => {
             throw(error);
-        });
-
-        this.readconsole.on('close', () => {
+        }).on('close', () => {
             console.log("Chat Conneciton Closed");
-        });
-        this.readconsole.on('pause', () => {
+        }).on('pause', () => {
             console.log("Chat paused");
         });
 
