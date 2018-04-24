@@ -11,7 +11,8 @@ try{
 }
 
 const stream = require('stream').Transform;
-const readline = require('readline');
+const prompt = require('prompt');
+const colors = require('colors/safe');
 exports.createECBAConsoleChat = createECBAConsoleChat;
 exports.createECBAConsoleBot = createECBAConsoleBot;
 module.export = ECBAConsole;
@@ -76,52 +77,22 @@ ECBAConsole.prototype.stopChat = function() {
 }
 
 ECBAConsole.prototype.chat = function() {
-    var config = {};
     if ( this.type == AS_CHAT ) {
-        config = {
-            input: process.stdin,
-            output: process.stdout,
-            terminal: false,
-            hisotrySize: 100, 
-            removeHistoryDuplicates: true
-        };
-        this.readconsole = readline.createInterface(config);
-        this.readconsole.setPrompt(CHAT_PROMPT);
-        //
-        // Captures when a line comes through
-        //
-        this.readconsole.on('line', (input) => {
-            var msg = input;
-            //console.log( "["+this.type+"]" + " Received: " + msg );
-            console.log("Sending message to bot...");
-            this.incoming.push(msg);
-            this.readconsole.prompt([true]);
-        }).on('error', (error) => {
-            throw(error);
-        }).on('close', () => {
-            console.log("Chat Conneciton Closed");
-        }).on('pause', () => {
-            console.log("Chat paused");
-        });
-
-        //
-        // Bot will never prompt for ouput it will always require an interface
-        //
-        this.readconsole.prompt([true]);
+        prompt.message  = colors.green("CHAT_PROMPT");
+        prompt.delimiter = colors.green(">");
+        prompt.start();
+        prompt.get( ['msg'], this.callback );
     } 
-    //console.log( "["+this.type+"] Started...");
 }
 
-ECBAConsole.prototype.startChat = function(client, callback, errhandler) {
-    //console.log( this.type + " - Starting chat...");
-    this.state = CHAT_STARTED;
-    if ( client ) {
-        this.addClient(client);
-        this.callback = callback;
+ECBAConsole.prototype.startChat = function( msghandler, errhandler) {
+    if ( msghandler && errhandler ) {
+        this.state = CHAT_STARTED;
+        this.callback = msghandler
         this.errhandler = errhandler;
         this.chat();
     } else {
-        throw new Error( "No client defined before starting chat");
+        throw new Error ("Not all message handlers defined for function");
     }
 }
 
@@ -135,5 +106,14 @@ ECBAConsole.prototype.addCallback = function( callback ) {
 }
 
 ECBAConsole.prototype.sendMsg = function(msg) {
-    this.incoming.push(msg);
+    console.log( this.type + " Received message " + msg );
+    if (this.type == AS_BOT ) {
+        prompt.message  = colors.blue(BOT_PROMPT);
+        prompt.delimiter = colors.blue(">");
+    } else {
+        prompt.message  = colors.green(CHAT_PROMPT);
+        prompt.delimiter = colors.green(">");
+    }
+    //prompt.start();
+    prompt.get( ['msg'], this.callback );
 }

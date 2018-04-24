@@ -15,19 +15,27 @@ console_chat = _console.createECBAConsoleChat();
 console.log( "Creeating Bot interface to talk to Chat simulator...");
 console_bot = _console.createECBAConsoleBot();
 
-console_chat.startChat( console_bot, 
-    function(msg) {
-        console.log(" CHAT REC: " + msg ); 
-    },
-    function(err){
-        console.log(" CHAT ERROR: " + err ); 
-});
+//
+//  When startChat is called here is where we have entered our callback.
+//
+//
 
-console_bot.startChat( console_chat, 
-    function(msg) {
-        console.log("BOT REC: " + msg );
-        console_bot.sendMsg( "Echo " +msg);
-    },
-    function(err) {
-        console.log("BOT ERR: " + msg );
-});
+function messageFromBot( err, msg ) {
+    console.log("Received message from bot stdin");
+    console_chat.sendMsg(msg.msg);
+}
+
+function errorMsgFromBot(msg) {
+}
+
+function messageFromChatInput(err, result) {
+    console.log("Received from chat stdin " + result.msg);
+    console.log("Sending to bot...");
+    console_bot.sendMsg(result.msg);
+}
+
+function errorMsgFromChat(msg) {
+}
+
+console_bot.startChat(messageFromBot, errorMsgFromBot );
+console_chat.startChat(messageFromChatInput, errorMsgFromChat );

@@ -27,9 +27,10 @@ teams of folks working on this and/or this is live in production and issues are 
 
 ```
 Resolved   Issued   Description
-           20180422 Test where console test can communicate both ways via the std in/out on both sides.
+20180423   20180422 Test where console test can communicate both ways via the std in/out on both sides.
                         Get this part to process your messages and you are able to type back; then you can 
                         easily plugin to controller piece.
+                        Used prompt utility instead of readline (for now this good enough)
 20180422   20180422 Added High Level Design on how controller shall work.
 20180422   20180419 Console chat side sent message to bot side, but only does the the round trip once.
                         the _transform function needed to have "done" function called.
@@ -56,9 +57,9 @@ Resolved   Issued   Description
 20180411   20180410 Document what the mids string is.
 20180411   20180411 Adding mandatory message type to send message function for facebook requirement as of May 2018.
 20180409   20180410 Testing FBMSG1
-           20180410 Fixed the name of "recipient object mispelling
-           20180410 Fixed processing echo as a initial message
-	   20180410 Fixed sending the message with every response from facebook in test.
+20180410   20180410 Fixed the name of "recipient object mispelling
+20180410   20180410 Fixed processing echo as a initial message
+	       20180410 Fixed sending the message with every response from facebook in test.
            20180406 Document Facebook setup in this document - started
 20180409   20180409 Testing FBMSG1
                     Tested validation of using sendMessage with facebookmsg type
@@ -72,6 +73,7 @@ Resolved   Issued   Description
 ```
 **Todo**
 ```
+20180424 Add project dependancies (example prompt and colors need to be added)
 20180422 Have to see how we make sure dependant modules have the correct function implmeneted.  It seems something like the template design patter here.
 20180415 Test Console interface by having console read and write and/or integrated with controller for testing (need to decide which test is viable).
          I'ts a question of time, but discipoine would mean that interface should be testable as a standlone.
