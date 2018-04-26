@@ -28,21 +28,25 @@ function ECBAController() {
     this.destinationlist = controllerconfig.sink_destination.split(',');
 
     this.sourcelist.forEach(function(value) {
+        console.log("Processing source list " + value);
         if ( value == 'facebook' ) {
 	        // trying to requires 
 	        me._fb = require( "../"+value);
-            me._fb.createFacebook( me.sourcecallback.bind(me) );
-	    } else {
+            me._source = me._fb.createFacebook( me.sourcecallback.bind(me) );
+	    } else if ( value == 'console' ) {
+            me._console = require("../"+value);
+            me._source =  me._console.createECBAConsoleChat();
+        }else {
             console.log("Source is not allowed");
             throw new Error("Source is not setup yet: " +value);
         }
     });
 
     this.destinationlist.forEach(function(value) {
-        if ( vlaue == 'console' ) {
+        if ( value == 'console' ) {
             me._console = require("../"+value);
-            var console = _console.createECBAConsoleBot();
-            var console.startChat( me , me.sinkcallback.bind(me));
+            me._destination = me._console.createECBAConsoleBot();
+            me._destination.startChat( me.sinkcallback.bind(me), me.sinkerrcallback.bind(me));
         } else {
             console.log("Destination is now allowed");
             throw new Error("Destination is not allowed " + value );
@@ -50,15 +54,27 @@ function ECBAController() {
     });
 }
 
-ECBAController.prototype.addSourceCallBack = function ( callback ) {
-    this.callback = callback;
+ECBAController.prototype.sinkerrcallback = function(err, result ) {
+    console.log("Error received from source");
+}
+
+ECBAController.prototype.sinkcallback = function(err, msg) {
+    if ( this._source ) {
+        this._source.sendMsg(msg);
+    } else {
+        console.log("No source defined");
+    }
 }
 
 ECBAController.prototype.sourcecallback = function( fb, fbmsg) {
-   if ( this.callback ) {
-       this.callback(fb, fbmsg ); 
-   } else {
-       console.log( "there is no callback assigned yet");
-   }
+    if ( this._destination ) {
+        //
+        // for now we deconstruct the message be we just want to receive plain message
+        // this is facebook specific
+        //
+        this._destination.sendMsg(fbmsg.msgtext);
+    } else {
+        console.log("No destination defined");
+    }
 }
 

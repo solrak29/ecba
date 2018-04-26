@@ -114,6 +114,6 @@ ECBAConsole.prototype.sendMsg = function(msg) {
         prompt.message  = colors.green(CHAT_PROMPT);
         prompt.delimiter = colors.green(">");
     }
-    //prompt.start();
+    prompt.start();
     prompt.get( ['msg'], this.callback );
 }

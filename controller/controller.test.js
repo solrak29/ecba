@@ -11,15 +11,4 @@ _ctrl = require("../controller");
 ctrl = _ctrl.createECBAController();
 console.log( testmsg + " Using version " + ctrl.version);
 console.log( testmsg + " Source " + ctrl.sourcelist);
-console.log( testmsg + " _fb " + ctrl._fb);
-
-function callback( fb, msg ) {
-    if ( msg.msgType == "MSG" ) {
-        console.log ( testmsg + " received msg from facbook" );
-        msg.setText( testmsg + "I received your message (" + msg.msgtext + ")");
-        fb.sendMessage(msg);
-    }
-
-}
-
-ctrl.sourcecallback( callback );
+console.log( testmsg + " Destination " + ctrl.destinationlist);

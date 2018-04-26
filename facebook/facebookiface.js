@@ -42,7 +42,7 @@ function Facebook(callback) {
     this.fbapp.listen(this.fbapp.get('port'));
 }
 
-Facebook.prototype.sendMessage = function( msg ) {
+Facebook.prototype.sendMsg = function( msg ) {
     console.log("Sending message...");
     if ( msg.constructor.name == "FacebookMsg" ) {
         var msgtofb = {
@@ -84,8 +84,13 @@ Facebook.prototype.processMessage = function( req, res ) {
         console.log("Processing message...");
         fbmsg = _fbmsg.createFBMessage(req.body);
         fbmsg.processMessage(req.body);
-        console.log("Sending message (" + fbmsg.msgType +") to client...");
-        this.clientcallback( this, fbmsg);
+        // for now we just want to send MSG events
+        if ( fbmsg.msgType == "MSG" ) {
+            console.log("Sending message (" + fbmsg.msgType +") to client...");
+            this.clientcallback( this, fbmsg);
+        } else {
+            console.log("Skipping in sending msg " + fbmsg.msgType + " to client...");
+        }
     } else {
         console.log("Here save the message until a call back has been registerd");
     }

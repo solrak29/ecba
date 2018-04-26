@@ -27,6 +27,10 @@ teams of folks working on this and/or this is live in production and issues are 
 
 ```
 Resolved   Issued   Description
+           20180425 Need to clearly define the callback and messaging across all applicaotns.  
+                        Create a new message module that all interfaces will use to pass messages.
+           20180425 Preliminary testing with fb to console bot (next will be console chat via control to b ot).
+20180425   20180425 Uploaded console design graphic
 20180423   20180422 Test where console test can communicate both ways via the std in/out on both sides.
                         Get this part to process your messages and you are able to type back; then you can 
                         easily plugin to controller piece.
@@ -41,13 +45,13 @@ Resolved   Issued   Description
 20180419   20180416 Adding function to close console chat for testing different conditions
                         Leaving this out
 20180419   20180415 Testing case where console is chat is not connected to console bot.
-                    Testing is still in progress on the console product.
-                    Decied to remove this test.
+                        Testing is still in progress on the console product.
+                        Decied to remove this test.
 20180422   20180415 Testing console code without controller - in progress
 20180422   20180415 Adding project board to this project
 20180422   20180414 Testing console code without controller - in progress
            20180414 Created console bot to receive messages and test controller.
-                    Will expand this to eventually handle both sides.
+                        Will expand this to eventually handle both sides.
            20180414 Testing having controler recieve and send back message
 20180412   20180412 Exited after facebook configs are not found (not reason for app to continue).
            20180412 Started Controller Code Proto
@@ -73,6 +77,9 @@ Resolved   Issued   Description
 ```
 **Todo**
 ```
+20180425 Do not require call back handlers to have fb object passed. (will also have to modify test).
+20180425 Source callback should not require source object (right now you pass fb because of the design of fb).
+20180425 Add the ability to manage multiple source and desitnatons
 20180424 Add project dependancies (example prompt and colors need to be added)
 20180422 Have to see how we make sure dependant modules have the correct function implmeneted.  It seems something like the template design patter here.
 20180415 Test Console interface by having console read and write and/or integrated with controller for testing (need to decide which test is viable).
