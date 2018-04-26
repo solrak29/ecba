@@ -43,5 +43,5 @@ are great since we don't need to npm anything here.
 
 **High Level Design**
 
-![High Level Design](https://raw.githubusercontent.com/solrak29/ecba/master/console/highlevelconsole.jpg)
+![High Level Design](https://raw.githubusercontent.com/solrak29/ecba/master/console/consoledesign.png)
 
