@@ -27,6 +27,7 @@ teams of folks working on this and/or this is live in production and issues are 
 
 ```
 Resolved   Issued   Description
+           20140426 Deciing on Strategy Pattern or Template Pattern for Messaging.
            20180425 Need to clearly define the callback and messaging across all applicaotns.  
                         Create a new message module that all interfaces will use to pass messages.
            20180425 Preliminary testing with fb to console bot (next will be console chat via control to b ot).
