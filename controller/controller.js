@@ -12,6 +12,8 @@ try{
     console.log(ex.message);
 }
 
+var msg = require("../message");
+
 exports.createECBAController = createECBAController;
 module.export = ECBAController;
 
@@ -66,13 +68,15 @@ ECBAController.prototype.sinkcallback = function(err, msg) {
     }
 }
 
-ECBAController.prototype.sourcecallback = function( fb, fbmsg) {
+ECBAController.prototype.sourcecallback = function( msg) {
     if ( this._destination ) {
         //
         // for now we deconstruct the message be we just want to receive plain message
         // this is facebook specific
         //
-        this._destination.sendMsg(fbmsg.msgtext);
+        var ecbamsg = _msg.createECBAMessage("MSG");   
+        ecbamsg.setMsg(msg);
+        this._destination.sendMsg(ecbamsg);
     } else {
         console.log("No destination defined");
     }

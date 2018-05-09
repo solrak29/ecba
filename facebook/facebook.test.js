@@ -15,7 +15,7 @@ console.log( TestMsg + "Checking configuration object: " + util.inspect(facebook
 console.log(TestMsg + "Checking type 1 " + typeof(facebook));
 console.log(TestMsg + "Checking type 2 " + typeof(facebook.createFacebook));
 
-function callback(fb, msg) {
+function callback( msg) {
     console.log( TestMsg + util.inspect(msg, false, null));
     console.log( TestMsg + "In client call back recieve message type : " + msg.getMsgType());
     console.log( TestMsg + "Received message from : " + msg.userid);
@@ -24,7 +24,7 @@ function callback(fb, msg) {
         console.log( TestMsg + "Received message at ( " + msg.msgtime + " ) : " + msg.msgtext );
         console.log( TestMsg + "Setting message to what is received");
         msg.setText(TestMsg + "I received your message (" + msg.msgtext + ")");
-        fb.sendMessage(msg);
+        fb.sendMsg(msg);
     } else {
         console.log( TestMsg + "Receive message event : " + msg.msgType);
     }

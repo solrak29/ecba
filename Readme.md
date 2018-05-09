@@ -27,8 +27,12 @@ teams of folks working on this and/or this is live in production and issues are 
 
 ```
 Resolved   Issued   Description
-           20140426 Deciing on Strategy Pattern or Template Pattern for Messaging.
-           20180425 Need to clearly define the callback and messaging across all applicaotns.  
+           20180507 Createing console message strategy to use as part of the messaging framework
+20180507   20180507 Retest facebook code with it's testin code; as it depended on the facebook object (I forget why).
+20180507   20180507 Fixed test code for facebook as sendMessage was renamed to sendMsg 
+           20180507 Add contant message types that can be used
+20180507   20180426 Deciing on Strategy Pattern or Template Pattern for Messaging.
+20180507   20180425 Need to clearly define the callback and messaging across all applicaotns.  
                         Create a new message module that all interfaces will use to pass messages.
            20180425 Preliminary testing with fb to console bot (next will be console chat via control to b ot).
 20180425   20180425 Uploaded console design graphic

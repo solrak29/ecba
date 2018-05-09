@@ -9,21 +9,15 @@ Messaging is the standard object that will be used for passing messages around.
 **Design**
 
 The initial thought here is to use strategy design pattern  This way we can dynamically
-create message objects and we can contain the message components to their moduels.  For
-example, in the facebook module I will use a facebook message component, but that that
-component will stay with my facebook module and not other component will rely or
-care about this piece.  But to pass any details to other compponents then you pass
-the this message module using the facebook message component as the stategy at which
-we will extract data points.
+create message objects and change the message strategy in real time.  Where with the template
+desing pattern you not have an object that can dynamically change.
 
-Plus other operatoins maybe required for the concrete type...
+An example would be as follows:
 
-I would use Template pattern here, but I'd rather not have a type coupleing to the
-the components where I would be derriving from this module's class.
-
-Thus, we are only passing around these Message objects and arbtrary objects which
-allows our checks for the appropiate objects.  This is where polymorphasim is a
-question in node for me right now - 4/2018
+FacbookMessageStrategy is passed into the Message object as the stragy to be used to extract
+messaging.  The message object goes to the Console component, but now the Console component
+will then create it's ConsoleMessageStrategy that will now replace the FacebookMessageStategy.
+The Messae object will again extract the messaging accordingly.
 
 *Data Points*
 * msgTxt - the text that is in the message that is used heavily here

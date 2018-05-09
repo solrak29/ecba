@@ -106,7 +106,7 @@ ECBAConsole.prototype.addCallback = function( callback ) {
 }
 
 ECBAConsole.prototype.sendMsg = function(msg) {
-    console.log( this.type + " Received message " + msg );
+    console.log( this.type + " Received message " + msg.getMsg() );
     if (this.type == AS_BOT ) {
         prompt.message  = colors.blue(BOT_PROMPT);
         prompt.delimiter = colors.blue(">");

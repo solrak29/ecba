@@ -10,7 +10,7 @@ Messages are always initiated by a person visiting your Facebook page.
 Currnetly this api only supports standard messaging, but will also 
 support subscription and sponsored messaging in the future.
 
-This iteration currently will only use teh Send API for simple text
+This iteration currently will only use the Send API for simple text
 and structured messaging.  (other features will be made available on case by case basis).
 
 ```

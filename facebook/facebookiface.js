@@ -87,7 +87,7 @@ Facebook.prototype.processMessage = function( req, res ) {
         // for now we just want to send MSG events
         if ( fbmsg.msgType == "MSG" ) {
             console.log("Sending message (" + fbmsg.msgType +") to client...");
-            this.clientcallback( this, fbmsg);
+            this.clientcallback( fbmsg);
         } else {
             console.log("Skipping in sending msg " + fbmsg.msgType + " to client...");
         }

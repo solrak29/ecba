@@ -25,8 +25,27 @@ FacebookMsg.prototype.setText = function ( msgtext ) {
     this.msgtext = msgtext;
 }
 
+//
+//  Functions so this objects work with the strategy of msg objects.
+//
 FacebookMsg.prototype.getMsgType = function() {
     return this.msgType;
+}
+
+FacebookMsg.prototype.getMsg = function( ) {
+    return this.msgtext;
+}
+
+FacebookMsg.prototype.getTo = function() {
+    return this.pageid;
+}
+
+FacebookMsg.prototype.getFrom = function() {
+    return this.userid;
+}
+
+FacebookMsg.prototype.getTimeStamp = function() {
+    return this.msgtime;
 }
 
 FacebookMsg.prototype.processMessage = function( request ) {
