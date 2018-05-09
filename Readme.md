@@ -27,7 +27,9 @@ teams of folks working on this and/or this is live in production and issues are 
 
 ```
 Resolved   Issued   Description
-           20180507 Createing console message strategy to use as part of the messaging framework
+20180507   20180425 Source callback should not require source object (right now you pass fb because of the design of fb).
+20180507   20180425 Do not require call back handlers to have fb object passed. (will also have to modify test).
+           20180507 Creating console message strategy to use as part of the messaging framework
 20180507   20180507 Retest facebook code with it's testin code; as it depended on the facebook object (I forget why).
 20180507   20180507 Fixed test code for facebook as sendMessage was renamed to sendMsg 
            20180507 Add contant message types that can be used
@@ -82,8 +84,6 @@ Resolved   Issued   Description
 ```
 **Todo**
 ```
-20180425 Do not require call back handlers to have fb object passed. (will also have to modify test).
-20180425 Source callback should not require source object (right now you pass fb because of the design of fb).
 20180425 Add the ability to manage multiple source and desitnatons
 20180424 Add project dependancies (example prompt and colors need to be added)
 20180422 Have to see how we make sure dependant modules have the correct function implmeneted.  It seems something like the template design patter here.
