@@ -12,7 +12,7 @@ try{
     console.log(ex.message);
 }
 
-var msg = require("../message");
+var _msg = require("../message");
 
 exports.createECBAController = createECBAController;
 module.export = ECBAController;
@@ -61,6 +61,8 @@ ECBAController.prototype.sinkerrcallback = function(err, result ) {
 }
 
 ECBAController.prototype.sinkcallback = function(err, msg) {
+    console.log("Received message back about to send to source...");
+    console.log("Message about to send " + msg.msgtext );
     if ( this._source ) {
         this._source.sendMsg(msg);
     } else {
@@ -71,11 +73,12 @@ ECBAController.prototype.sinkcallback = function(err, msg) {
 ECBAController.prototype.sourcecallback = function( msg) {
     if ( this._destination ) {
         //
-        // for now we deconstruct the message be we just want to receive plain message
-        // this is facebook specific
+        // for now we deconstruct the message but we just want to receive plain message
+        // this is facebook specific ... will fix later
         //
         var ecbamsg = _msg.createECBAMessage("MSG");   
         ecbamsg.setMsg(msg);
+        ecbamsg.setUserId(msg.userid);
         this._destination.sendMsg(ecbamsg);
     } else {
         console.log("No destination defined");

@@ -26,7 +26,7 @@ function ECBAMessage(type ) {
     me.timestamp = ""
 }
 
-ECBAMessage.prototpye.setMsg(message) = function(message) {
+ECBAMessage.prototype.setMsg = function(message) {
     this.msgStrategy = message;
     this.msgText = this.msgStrategy.getMsg();
     this.to = this.msgStrategy.getTo();
@@ -34,7 +34,11 @@ ECBAMessage.prototpye.setMsg(message) = function(message) {
     this.timestamp = this.msgStrategy.getTimeStamp();
 }
 
-ECBAMessage.prototype.getMsg() = function() {
+ECBAMessage.prototype.setUserId = function(userid) {
+    this.userid = userid;
+}
+
+ECBAMessage.prototype.getMsg = function() {
     if ( this.msgStrategy ) {
         return this.msgText;
     } else {

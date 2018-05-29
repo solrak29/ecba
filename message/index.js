@@ -6,7 +6,7 @@
 //    author: carlos <solrak29@yahoo.com>
 //
 
-var msg = require("./messaging.js
+var msg = require("./message.js");
 
 module.exports = {
     createECBAMessage: msg.createECBAMessage

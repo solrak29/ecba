@@ -27,6 +27,9 @@ teams of folks working on this and/or this is live in production and issues are 
 
 ```
 Resolved   Issued   Description
+20180528   20180528 Added userid to Message object/module
+20180528   20180528 Message module would not compile due to sytax errors
+           20180528 Get facebook to controller to console interaction (in progress)
 20180507   20180425 Source callback should not require source object (right now you pass fb because of the design of fb).
 20180507   20180425 Do not require call back handlers to have fb object passed. (will also have to modify test).
            20180507 Creating console message strategy to use as part of the messaging framework
@@ -84,6 +87,10 @@ Resolved   Issued   Description
 ```
 **Todo**
 ```
+20180528 The controller module has specific calls to console to start as chat or bot.  This should not be the
+         case.  We should start any module and and that module will set that object as source or destination.
+         So for console, it should be the following:  console.createECBAConsole(); console.asSource(); or 
+         console.createECBAConsole(AS_SOURCE).
 20180425 Add the ability to manage multiple source and desitnatons
 20180424 Add project dependancies (example prompt and colors need to be added)
 20180422 Have to see how we make sure dependant modules have the correct function implmeneted.  It seems something like the template design patter here.
