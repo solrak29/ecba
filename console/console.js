@@ -107,6 +107,7 @@ ECBAConsole.prototype.addCallback = function( callback ) {
 
 ECBAConsole.prototype.sendMsg = function(msg) {
     console.log( this.type + " Received message " + msg.getMsg() );
+    console.log( "From user : " + msg.getUserId());
     var me = this;
     if (this.type == AS_BOT ) {
         prompt.message  = colors.blue(BOT_PROMPT);
@@ -117,10 +118,13 @@ ECBAConsole.prototype.sendMsg = function(msg) {
     }
     prompt.start();
     prompt.get( ['msg'], function( err, result ) {
+        var newresult = {
+            userid  : msg.userid,
+            msgtext : result.msg,
+            constructor : { name : "FacebookMsg" }
+        };
         console.log("Input received sending " + result.msg);
-        result.msg = { userid : msg.userid };
-        result.msgtext = result.msg;
-        result.constructor = { name : "FacebookMsg" };
-        me.callback(err, result);
+        console.log("From User ID: " + msg.getUserId());
+        me.callback(err, newresult);
     });
 }

@@ -27,9 +27,12 @@ teams of folks working on this and/or this is live in production and issues are 
 
 ```
 Resolved   Issued   Description
+           20180605 Get Landing page ready.
+           20180605 Registerd New Facebook App with New Facebook page.
+           20180605 Integrate Watson Components.
 20180528   20180528 Added userid to Message object/module
 20180528   20180528 Message module would not compile due to sytax errors
-           20180528 Get facebook to controller to console interaction (in progress)
+20180528   20180528 Get facebook to controller to console interaction 
 20180507   20180425 Source callback should not require source object (right now you pass fb because of the design of fb).
 20180507   20180425 Do not require call back handlers to have fb object passed. (will also have to modify test).
            20180507 Creating console message strategy to use as part of the messaging framework

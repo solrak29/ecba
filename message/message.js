@@ -34,6 +34,10 @@ ECBAMessage.prototype.setMsg = function(message) {
     this.timestamp = this.msgStrategy.getTimeStamp();
 }
 
+ECBAMessage.prototype.getUserId = function() {
+    return this.userid;
+}
+
 ECBAMessage.prototype.setUserId = function(userid) {
     this.userid = userid;
 }

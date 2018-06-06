@@ -10,6 +10,7 @@ module.export = Facebook;
 const util = require('util')
 _fbmsg = require('./facebookmsg');
 
+
 const 
   bodyParser = require('body-parser'),
   crypto = require('crypto'),
@@ -42,18 +43,34 @@ function Facebook(callback) {
     this.fbapp.listen(this.fbapp.get('port'));
 }
 
+Facebook.prototype.testqueryPage = function( ) {
+    queryTerm = "kool kids world";
+    searchType = "place";
+	request({
+	method: 'GET',
+	uri:  'https://graph.facebook.com/search',
+	qs : { access_token: facebookconfig.page_access_token ,
+	    q : queryTerm,
+        type : searchType,
+        fields : 'name, category, link, picture, is_verified'
+	}}, function (error, response, body) {
+        console.log("Recevied an response  => " + util.inspect(response,false,null) );
+        console.log("Recevied an error => " + error );
+    });
+}
+
 Facebook.prototype.sendMsg = function( msg ) {
-    console.log("Sending message...");
+    console.log("Sending message msg =>" + msg.msgtext + " for user: " + msg.userid);
     if ( msg.constructor.name == "FacebookMsg" ) {
         var msgtofb = {
             message_type: "RESPONSE",
-	    recipient: {
-	        id: msg.userid
-	    },
-	    message: {
-	        text: msg.msgtext,
-		metadata: "DEVELPER_DEFINED_METADATA"
-	    }
+	        recipient: {
+	            id: msg.userid
+	        },
+	        message: {
+	            text: msg.msgtext,
+		    metadata: "DEVELPER_DEFINED_METADATA"
+	        }
         };
 	request({
 	    uri:  'https://graph.facebook.com/v2.6/me/messages',
